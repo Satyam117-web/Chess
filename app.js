@@ -18,7 +18,6 @@ io.on("connection", function (uniquesocket) {
   console.log("User connected:", uniquesocket.id);
   let assigned = false;
 
-  // Assign to existing room with space
   for (let room of gameRooms) {
     const playerCount = [room.white, room.black].filter(Boolean).length;
     if (playerCount < 2) {
@@ -38,7 +37,6 @@ io.on("connection", function (uniquesocket) {
     }
   }
 
-  // If not assigned, create new room
   if (!assigned) {
     const newRoom = {
       id: `room-${gameRooms.length + 1}`,
@@ -53,7 +51,6 @@ io.on("connection", function (uniquesocket) {
     uniquesocket.emit("playerRole", "w");
   }
 
-  // Handle spectators
   const currentRoom = gameRooms.find(r => r.id === uniquesocket.roomId);
   const clientsInRoom = io.sockets.adapter.rooms.get(currentRoom.id)?.size || 0;
 
