@@ -29,13 +29,25 @@ io.on("connection", function (uniquesocket) {
     uniquesocket.emit("spectatorRole");
   }
 
-  uniquesocket.on("disconnect", function () {
-    if (uniquesocket.id === players.white) {
-      delete players.white;
-    } else if (uniquesocket.id === players.black) {
-      delete players.black;
-    }
-  });
+uniquesocket.on("disconnect", function () {
+  let shouldReset = false;
+
+  if (uniquesocket.id === players.white) {
+    delete players.white;
+    shouldReset = true;
+  } else if (uniquesocket.id === players.black) {
+    delete players.black;
+    shouldReset = true;
+  }
+
+  if (shouldReset) {
+    chess.reset();
+    currentPlayer = "w";
+    io.emit("gameReset", "A player left. Starting a new game.");
+    io.emit("boardState", chess.fen());
+  }
+});
+
 
   uniquesocket.on("move", (move) => {
     try {
