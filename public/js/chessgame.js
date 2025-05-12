@@ -98,13 +98,18 @@ const getPieceUnicode = (piece) => {
 
 socket.on("playerRole", function (role) {
   playerRole = role;
+  const statusDiv = document.getElementById("status");
+  statusDiv.textContent = role === "w" ? "You are White" : "You are Black";
   renderBoard();
 });
 
 socket.on("spectatorRole", function () {
   playerRole = null;
+  const statusDiv = document.getElementById("status");
+  statusDiv.textContent = "You are spectating a live game.";
   renderBoard();
 });
+
 
 socket.on("boardState", function (fen) {
   chess.load(fen);
@@ -115,4 +120,9 @@ socket.on("move", function (move) {
   chess.move(move);
   renderBoard();
 });
+socket.on("spectatingMessage", function (msg) {
+  const statusDiv = document.getElementById("status");
+  statusDiv.textContent = msg;
+});
+
 renderBoard();

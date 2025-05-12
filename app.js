@@ -27,6 +27,7 @@ io.on("connection", function (uniquesocket) {
     uniquesocket.emit("playerRole", "b");
   } else {
     uniquesocket.emit("spectatorRole");
+    uniquesocket.emit("spectatingMessage", "You are spectating a live game.");
   }
 
 uniquesocket.on("disconnect", function () {
