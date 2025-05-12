@@ -3,6 +3,7 @@ const socket = require("socket.io");
 const { Chess } = require("chess.js");
 const http = require("http");
 const path = require("path");
+const port=process.env.PORT || 8080;
 
 const app = express();
 const server = http.createServer(app);
