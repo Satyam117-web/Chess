@@ -18,6 +18,7 @@ io.on("connection", function (uniquesocket) {
   console.log("User connected:", uniquesocket.id);
   let assigned = false;
 
+  // Assign to existing room with space
   for (let room of gameRooms) {
     const playerCount = [room.white, room.black].filter(Boolean).length;
     if (playerCount < 2) {
@@ -37,6 +38,7 @@ io.on("connection", function (uniquesocket) {
     }
   }
 
+  // If not assigned, create new room
   if (!assigned) {
     const newRoom = {
       id: `room-${gameRooms.length + 1}`,
@@ -51,6 +53,7 @@ io.on("connection", function (uniquesocket) {
     uniquesocket.emit("playerRole", "w");
   }
 
+  // Handle spectators
   const currentRoom = gameRooms.find(r => r.id === uniquesocket.roomId);
   const clientsInRoom = io.sockets.adapter.rooms.get(currentRoom.id)?.size || 0;
 
@@ -79,21 +82,13 @@ io.on("connection", function (uniquesocket) {
     const room = gameRooms.find(r => r.id === uniquesocket.roomId);
     if (!room) return;
 
-    let reset = false;
-    if (uniquesocket.id === room.white) {
-      room.white = null;
-      reset = true;
-    }
-    if (uniquesocket.id === room.black) {
-      room.black = null;
-      reset = true;
-    }
+    if (uniquesocket.id === room.white) room.white = null;
+    if (uniquesocket.id === room.black) room.black = null;
 
     if (!room.white && !room.black) {
       gameRooms = gameRooms.filter(r => r.id !== room.id);
-    } else if (reset) {
+    } else {
       room.chess.reset();
-      io.to(room.id).emit("playerRole", "w");
       io.to(room.id).emit("gameReset", "A player left. Starting a new game.");
       io.to(room.id).emit("boardState", room.chess.fen());
     }
