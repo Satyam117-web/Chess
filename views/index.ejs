@@ -7,57 +7,63 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <style>
-      .chessboard {
-        font-family: "Segoe UI Symbol", "Noto Sans Symbols", "Arial Unicode MS",
-          sans-serif;
-        display: grid;
-        grid-template-columns: repeat(8, minmax(0, 1fr));
-        grid-template-rows: repeat(8, minmax(0, 1fr));
-        width: 400px;
-        height: 400px;
-        transform: rotate(0deg);
-        vertical-align: middle;
-      }
-      .piece.white {
-        color: white;
-        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
-      }
-      .piece.black {
-        color: black;
-      }
-      .square.light {
-        background-color: #f0d9b5;
-      }
-      .square.dark {
-        background-color: #b58863;
-      }
-      .piece {
-        font-size: 36px;
-        cursor: pointer;
-      }
-      .piece.draggable {
-        cursor: grab;
-      }
-      .dragging {
-        opacity: 0.5;
-      }
+  .chessboard {
+    font-family: "Segoe UI Symbol", "Noto Sans Symbols", "Arial Unicode MS", sans-serif;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    width: 400px;
+    height: 400px;
+    transform: rotate(0deg);
+    vertical-align: middle;
+  }
 
-      .chessboard.flipped {
-        transform: rotate(180deg);
-      }
+  .piece {
+    font-size: 36px;
+    cursor: pointer;
+  }
 
-      .chessboard.flipped .square {
-        transform: rotate(
-          180deg
-        );  
-      }
+  .piece.white {
+    color: white;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1)); /* Adds contrast */
+  }
 
-      .square {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
+  .piece.black {
+    color: black;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.6)); /* Optional: light outline on dark squares */
+  }
+
+  .piece.draggable {
+    cursor: grab;
+  }
+
+  .dragging {
+    opacity: 0.5;
+  }
+
+  .square.light {
+    background-color: #f0d9b5;
+  }
+
+  .square.dark {
+    background-color: #b58863;
+  }
+
+  .square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chessboard.flipped {
+    transform: rotate(180deg);
+  }
+
+  .chessboard.flipped .square {
+    transform: rotate(180deg);
+  }
+</style>
+
   </head>
   <body>
     <div id="status" class="text-white text-2xl  text-center pt-10 font-bold bg-black"></div>

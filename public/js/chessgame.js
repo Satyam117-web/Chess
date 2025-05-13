@@ -119,11 +119,7 @@ socket.on("move", function (move) {
   chess.move(move);
   renderBoard();
 });
-socket.on("chooseRole", (msg) => {
-  const wantToPlay = confirm(`${msg}\nClick OK to play, Cancel to spectate.`);
-  socket.emit("requestRole", wantToPlay ? "play" : "spectate");
-});
-
+ 
 socket.on("spectatingMessage", function (msg) {
   const statusDiv = document.getElementById("status");
   statusDiv.textContent = msg;
