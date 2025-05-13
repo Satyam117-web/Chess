@@ -100,16 +100,15 @@ socket.on("playerRole", function (role) {
   playerRole = role;
   const statusDiv = document.getElementById("status");
   statusDiv.textContent = role === "w" ? "You are White" : "You are Black";
-  renderBoard();
+  renderBoard(); // render only after receiving role
 });
 
 socket.on("spectatorRole", function () {
   playerRole = null;
   const statusDiv = document.getElementById("status");
   statusDiv.textContent = "You are spectating a live game.";
-  renderBoard();
+  renderBoard(); // render only after assigned as spectator
 });
-
 
 socket.on("boardState", function (fen) {
   chess.load(fen);
@@ -120,6 +119,11 @@ socket.on("move", function (move) {
   chess.move(move);
   renderBoard();
 });
+socket.on("chooseRole", (msg) => {
+  const wantToPlay = confirm(`${msg}\nClick OK to play, Cancel to spectate.`);
+  socket.emit("requestRole", wantToPlay ? "play" : "spectate");
+});
+
 socket.on("spectatingMessage", function (msg) {
   const statusDiv = document.getElementById("status");
   statusDiv.textContent = msg;
