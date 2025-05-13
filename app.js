@@ -39,6 +39,7 @@ io.on("connection", function (uniquesocket) {
 
   // Move handler
   uniquesocket.on("move", (move) => {
+  try {
     if (
       (chess.turn() === "w" && uniquesocket.id !== players.white) ||
       (chess.turn() === "b" && uniquesocket.id !== players.black)
@@ -51,7 +52,12 @@ io.on("connection", function (uniquesocket) {
     } else {
       uniquesocket.emit("invalid move", move);
     }
-  });
+  } catch (err) {
+    console.error("Move processing error:", err);
+    uniquesocket.emit("invalid move", move);
+  }
+});
+
 
   // Disconnect handler
   uniquesocket.on("disconnect", () => {
